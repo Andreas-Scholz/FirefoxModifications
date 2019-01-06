@@ -1,0 +1,60 @@
+/* Show title of unread tabs with red and italic font */
+.tab.unread .label {
+  color: red !important;
+  font-style: italic !important;
+}
+/* As little space before the tab name as possible.
+   The fold/unfold icon is not affected. */
+.tab:not(.pinned) {
+  padding-left: 0px !important; /* !important is required when there are enough tabs to cause a scrollbar */
+}
+
+/* highlight active tab */
+.tab.active {
+  background-color: #0066FF;
+}
+
+/* Tab numbering and counting
+All of the options in this section need the raw count of tabs available. This is done using CSS counters: */
+
+#tabbar {
+  counter-reset: vtabs atabs tabs;
+  /* vtabs tracks visible tabs, atabs tracks active tabs, tabs tracks all tabs */
+}
+.tab:not(.collapsed):not(.discarded) {
+  counter-increment: vtabs atabs tabs;
+}
+.tab:not(.collapsed) {
+  counter-increment: vtabs tabs;
+}
+.tab:not(.discarded) {
+  counter-increment: atabs tabs;
+}
+.tab {
+  counter-increment: tabs;
+}
+
+/* Tab counts in new tab button */
+.newtab-button::after {
+  content: var(--tab-count-text);
+  pointer-events: none;
+    
+  position: absolute;
+  left: 0.5em;
+
+  /* TST 2.4.0 - Fix for Issue #1664 */
+  background: transparent !important;
+  mask: none !important;
+}
+
+.newtab-button {
+  --tab-count-text: counter(atabs) "/" counter(tabs) " tabs";
+}
+
+
+/* Add private browsing indicator per tab */
+/*
+.tab.private-browsing .label:before {
+  content: "🕶";
+}
+*/
